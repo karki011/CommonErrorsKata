@@ -23,7 +23,7 @@ namespace CommonErrorsKata
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
             files = System.IO.Directory.GetFiles(Environment.CurrentDirectory + @"..\..\..\ErrorPics");
-            possibleAnswers = files.Select(f => Path.GetFileName(f)?.Replace(".png", "")).ToArray();
+            possibleAnswers = files.Select(f => Path.GetFileNameWithoutExtension(f)).ToArray();
             lstAnswers.DataSource = possibleAnswers;
             answerQueue = new AnswerQueue<TrueFalseAnswer>(possibleAnswers.Length);
             Next();
@@ -41,7 +41,7 @@ namespace CommonErrorsKata
                     Thread.Sleep(50);
                 }
 
-                if (IsPlaying)
+                if (IsPlaying == false)
                 {
                     Application.Exit();
                 }
@@ -64,8 +64,8 @@ namespace CommonErrorsKata
         {
             if (answerQueue.Count == possibleAnswers.Length && answerQueue.Grade >= 98)
             {
-                MessageBox.Show("Congratulations you've defeated me!");
                 IsPlaying = false;
+                MessageBox.Show("Congratulations you've defeated me!");
                 Application.Exit();
                 return;
             }
