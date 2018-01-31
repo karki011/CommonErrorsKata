@@ -14,10 +14,12 @@ namespace CommonErrorsKata.Shared
         /// <returns></returns>
         public static T GetRandom<T>(this IEnumerable<T> collection)
         {
-            if (collection == null || collection.Count() == 0) return default(T);
+            if (collection == null || collection.Count() == 0)
+            {
+                return default(T);
+            }
             var rand = new Random(DateTime.Now.Millisecond);
-            var index = rand.Next(collection.Count());
-            return collection.ToArray()[index];
+            return collection.ToArray()[rand.Next(collection.Count())];
         }
     }
 }

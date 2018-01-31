@@ -97,7 +97,6 @@
         }
 
         #endregion
-
         private System.Windows.Forms.PictureBox pbImage;
         private System.Windows.Forms.ListBox lstAnswers;
         private System.Windows.Forms.ProgressBar progress;

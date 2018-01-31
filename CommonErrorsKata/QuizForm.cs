@@ -13,7 +13,7 @@ namespace CommonErrorsKata
         private readonly AnswerQueue<TrueFalseAnswer> answerQueue;
         private readonly string[] files;
         private readonly SynchronizationContext synchronizationContext;
-        private int i = 100;
+        private int _time = 100;
         private string currentBaseName = null;
         private readonly string[] possibleAnswers = null;
 
@@ -33,9 +33,9 @@ namespace CommonErrorsKata
         {
             await Task.Run(() =>
             {
-                for (i = 100; i > 0; i--)
+                for (_time = 100; _time > 0; _time--)
                 {
-                    UpdateProgress(i);
+                    UpdateProgress(_time);
                     Thread.Sleep(50);
                 }
                 Message("Need to be quicker on your feet next time!  Try again...");
@@ -44,7 +44,7 @@ namespace CommonErrorsKata
 
         private void LstAnswers_Click(object sender, EventArgs e)
         {
-            i = 100;
+            _time = 100;
             var tokens = currentBaseName.Split(' ');
             //TODO:  Figure out what is a valid answer.
             answerQueue.Enqueue(new TrueFalseAnswer(true));
