@@ -24,7 +24,7 @@ namespace CommonErrorsKata
             files = System.IO.Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\..\ErrorPics");
             possibleAnswers = files.Select(f => Path.GetFileName(f)?.Replace(".png", "")).ToArray();
             lstAnswers.DataSource = possibleAnswers;
-            answerQueue = new AnswerQueue<TrueFalseAnswer>(3);
+            answerQueue = new AnswerQueue<TrueFalseAnswer>(15);
             Next();
             lstAnswers.Click += LstAnswers_Click;
             StartTimer();
@@ -45,15 +45,22 @@ namespace CommonErrorsKata
         private void LstAnswers_Click(object sender, EventArgs e)
         {
             _time = 100;
-            var tokens = currentBaseName.Split(' ');
+            var selected = possibleAnswers[lstAnswers.SelectedIndex];
             //TODO:  Figure out what is a valid answer.
-            answerQueue.Enqueue(new TrueFalseAnswer(true));
+            if(selected == currentBaseName)
+            {
+                answerQueue.Enqueue(new TrueFalseAnswer(true));
+            }
+            else
+            {
+                answerQueue.Enqueue(new TrueFalseAnswer(false));
+            }
             Next();
         }
 
         private void Next()
         {
-            if (answerQueue.Count == 3 && answerQueue.Grade >= 98)
+            if (answerQueue.Count == 10 && answerQueue.Grade >= 98)
             {
                 MessageBox.Show("Congratulations you've defeated me!");
                 Application.Exit();
