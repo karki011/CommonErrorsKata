@@ -3,34 +3,27 @@ using System.Linq;
 
 namespace CommonErrorsKata.Shared
 {
-
     public class AnswerQueue<T> : Queue<T> where T : IGradable
     {
         private readonly int size;
 
-        public decimal Grade { get{ return this.Count() == 0 ? 0 :  this.Average(x => x.Grade); } }
-
+        public decimal Grade => this.Count() == 0 ? 0 : this.Average(x => x.Grade);
         /// <summary>
         /// Stack that cannot exceed it's size
         /// </summary>
         /// <param name="size">Maximum size of the queue</param>
-        public AnswerQueue(int size)
-        {
-            this.size = size;
-        }
-
+        public AnswerQueue(int size) => this.size = size;
         /// <summary>
         /// Hides the default implementation of queue Enqueue 
         /// </summary>
         /// <param name="item"></param>
         public new void Enqueue(T item)
         {
-            if (this.Count >= size) base.Dequeue();
-
+            if (Count >= size)
+            {
+                Dequeue();
+            }
             base.Enqueue(item);
-        }
-
-        
-        
+        }  
     }
 }
