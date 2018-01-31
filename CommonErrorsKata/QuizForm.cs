@@ -14,8 +14,9 @@ namespace CommonErrorsKata
         private readonly string[] files;
         private readonly SynchronizationContext synchronizationContext;
         private int _time = 100;
-        private string currentBaseName = null;
-        private readonly string[] possibleAnswers = null;
+        private string currentBaseName;
+        private readonly string[] possibleAnswers;
+        bool IsPlaying = true;
 
         public CommonErrorsForm()
         {
@@ -29,6 +30,7 @@ namespace CommonErrorsKata
             lstAnswers.Click += LstAnswers_Click;
             StartTimer();
         }
+
         private async void StartTimer()
         {
             await Task.Run(() =>
@@ -38,14 +40,14 @@ namespace CommonErrorsKata
                     UpdateProgress(_time);
                     Thread.Sleep(50);
                 }
-                if (answerQueue.Count == possibleAnswers.Length && answerQueue.Grade >= 98)
+
+                if (IsPlaying)
                 {
                     Application.Exit();
                 }
                 else
                 {
                     Message("Need to be quicker on your feet next time!  Try again...");
-
                 }
             });
         }
@@ -54,14 +56,7 @@ namespace CommonErrorsKata
         {
             _time = 100;
             var selected = possibleAnswers[lstAnswers.SelectedIndex];
-            if (selected == currentBaseName)
-            {
-                answerQueue.Enqueue(new TrueFalseAnswer(true));
-            }
-            else
-            {
-                answerQueue.Enqueue(new TrueFalseAnswer(false));
-            }
+            answerQueue.Enqueue(selected == currentBaseName ? new TrueFalseAnswer(true) : new TrueFalseAnswer(false));
             Next();
         }
 
@@ -70,9 +65,11 @@ namespace CommonErrorsKata
             if (answerQueue.Count == possibleAnswers.Length && answerQueue.Grade >= 98)
             {
                 MessageBox.Show("Congratulations you've defeated me!");
+                IsPlaying = false;
                 Application.Exit();
                 return;
             }
+
             label1.Text = answerQueue.Grade.ToString() + "%";
             var file = files.GetRandom();
             currentBaseName = Path.GetFileName(file)?.Replace(".png", "");
@@ -86,6 +83,7 @@ namespace CommonErrorsKata
                 progress.Value = value;
             }), value);
         }
+
         public void Message(string value)
         {
             synchronizationContext.Post(new SendOrPostCallback(x =>
