@@ -22,9 +22,9 @@ namespace CommonErrorsKata
             InitializeComponent();
             synchronizationContext = SynchronizationContext.Current;
             files = System.IO.Directory.GetFiles(Environment.CurrentDirectory +  @"..\..\..\ErrorPics");
-            possibleAnswers = new string[] { "Missing File", "null instance", "divide by zero" };
+            possibleAnswers = files.Select(f => Path.GetFileName(f)?.Replace(".png", "")).ToArray();
             lstAnswers.DataSource = possibleAnswers;
-            answerQueue = new AnswerQueue<TrueFalseAnswer>(15);
+            answerQueue = new AnswerQueue<TrueFalseAnswer>(3);
             Next();
             lstAnswers.Click += LstAnswers_Click;
             StartTimer();
@@ -53,7 +53,7 @@ namespace CommonErrorsKata
 
         private void Next()
         {
-            if (answerQueue.Count == 15 && answerQueue.Grade >= 98)
+            if (answerQueue.Count == 3 && answerQueue.Grade >= 98)
             {
                 MessageBox.Show("Congratulations you've defeated me!");
                 Application.Exit();
@@ -61,7 +61,7 @@ namespace CommonErrorsKata
             }
             label1.Text = answerQueue.Grade.ToString() + "%";
             var file = files.GetRandom();
-            currentBaseName= Path.GetFileName(file);
+            currentBaseName = Path.GetFileName(file)?.Replace(".png", "");
             pbImage.ImageLocation = file;
         }
 
