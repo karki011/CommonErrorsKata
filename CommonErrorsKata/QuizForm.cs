@@ -45,10 +45,7 @@ namespace CommonErrorsKata
                 {
                     Application.Exit();
                 }
-                else
-                {
-                    Message("Need to be quicker on your feet next time!  Try again...");
-                }
+                Message("Need to be quicker on your feet next time!  Try again...");
             });
         }
 
@@ -56,7 +53,7 @@ namespace CommonErrorsKata
         {
             _time = 100;
             var selected = possibleAnswers[lstAnswers.SelectedIndex];
-            answerQueue.Enqueue(selected == currentBaseName ? new TrueFalseAnswer(true) : new TrueFalseAnswer(false));
+            answerQueue.Enqueue(new TrueFalseAnswer(selected == currentBaseName));
             Next();
         }
 
@@ -72,7 +69,7 @@ namespace CommonErrorsKata
 
             label1.Text = answerQueue.Grade.ToString() + "%";
             var file = files.GetRandom();
-            currentBaseName = Path.GetFileName(file)?.Replace(".png", "");
+            currentBaseName = Path.GetFileNameWithoutExtension(file);
             pbImage.ImageLocation = file;
         }
 

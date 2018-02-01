@@ -6,7 +6,6 @@ namespace CommonErrorsKata.Shared
     public class AnswerQueue<T> : Queue<T> where T : IGradable
     {
         public readonly int size;
-
         public decimal Grade => this.Count() == 0 ? 0 : this.Average(x => x.Grade);
         /// <summary>
         /// Stack that cannot exceed it's size
